@@ -6318,7 +6318,7 @@ local TeleportCheck = false
 Players.LocalPlayer.OnTeleport:Connect(function(State)
 	if KeepInfYield and (not TeleportCheck) and queueteleport then
 		TeleportCheck = true
-		queueteleport("loadstring(game:HttpGet('https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source'))()")
+		queueteleport("loadstring(game:HttpGet('https://raw.githubusercontent.com/unfavourable/IY/refs/heads/main/IY'))()")
 	end
 end)
 
@@ -8562,10 +8562,6 @@ addcmd('btools',{},function(args, speaker)
 		Tool.Name = randomString()
 		Tool.Parent = speaker:FindFirstChildOfClass("Backpack")
 	end
-end)
-
-addcmd('f3x',{'fex'},function(args, speaker)
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/infyiff/backup/refs/heads/main/f3x.lua"))()
 end)
 
 addcmd('partpath',{'partname'},function(args, speaker)
