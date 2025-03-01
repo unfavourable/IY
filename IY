@@ -10,10 +10,15 @@ COREGUI = cloneref(game:GetService("CoreGui"))
 Players = cloneref(game:GetService("Players"))
 
 if not game:IsLoaded() then
+    local notLoaded = Instance.new("Message")
+    notLoaded.Parent = COREGUI
+    notLoaded.Text = "Infinite Yield is waiting for the game to load"
     game.Loaded:Wait()
+    notLoaded:Destroy()
 end
 
 currentVersion = "6.3"
+
 Holder = Instance.new("Frame")
 Title = Instance.new("TextLabel")
 Dark = Instance.new("Frame")
@@ -6318,7 +6323,7 @@ local TeleportCheck = false
 Players.LocalPlayer.OnTeleport:Connect(function(State)
 	if KeepInfYield and (not TeleportCheck) and queueteleport then
 		TeleportCheck = true
-		queueteleport("loadstring(game:HttpGet('https://raw.githubusercontent.com/unfavourable/IY/refs/heads/main/IY'))()")
+		queueteleport("loadstring(game:HttpGet('https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source'))()")
 	end
 end)
 
@@ -6743,7 +6748,7 @@ addcmd('serverinfo',{'info','sinfo'},function(args, speaker)
 end)
 
 addcmd('jobid',{},function(args, speaker)
-	local jobId = 'Roblox.GameLauncher.joinGameInstance('..PlaceId..', "'..JobId..'")'
+	local jobId = '// Run This In Console: Roblox.GameLauncher.joinGameInstance('..PlaceId..', "'..JobId..'")\n// Run This In Executor: game:GetService("TeleportService"):TeleportToPlaceInstance(' .. PlaceId .. ', "' .. JobId .. '", game.Players.LocalPlayer)'
 	toClipboard(jobId)
 end)
 
@@ -8564,6 +8569,10 @@ addcmd('btools',{},function(args, speaker)
 	end
 end)
 
+addcmd('f3x',{'fex'},function(args, speaker)
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/infyiff/backup/refs/heads/main/f3x.lua"))()
+end)
+
 addcmd('partpath',{'partname'},function(args, speaker)
 	selectPart()
 end)
@@ -8785,7 +8794,7 @@ addcmd('goto',{'to'},function(args, speaker)
 				speaker.Character:FindFirstChildOfClass('Humanoid').Sit = false
 				wait(.1)
 			end
-			getRoot(speaker.Character).CFrame = getRoot(Players[v].Character).CFrame + Vector3.new(0,5,0)
+			getRoot(speaker.Character).CFrame = getRoot(Players[v].Character).CFrame + Vector3.new(3,1,0)
 		end
 	end
 	execCmd('breakvelocity')
@@ -8799,7 +8808,7 @@ addcmd('tweengoto',{'tgoto','tto','tweento'},function(args, speaker)
 				speaker.Character:FindFirstChildOfClass('Humanoid').Sit = false
 				wait(.1)
 			end
-			TweenService:Create(getRoot(speaker.Character), TweenInfo.new(tweenSpeed, Enum.EasingStyle.Linear), {CFrame = getRoot(Players[v].Character).CFrame + Vector3.new(0,5,0)}):Play()
+			TweenService:Create(getRoot(speaker.Character), TweenInfo.new(tweenSpeed, Enum.EasingStyle.Linear), {CFrame = getRoot(Players[v].Character).CFrame + Vector3.new(3,1,0)}):Play()
 		end
 	end
 	execCmd('breakvelocity')
@@ -10298,7 +10307,7 @@ addcmd('loopgoto',{},function(args, speaker)
 			wait(.1)
 		end
 		loopgoto = Players[v]
-		local distance = 0
+		local distance = 3
 		if args[2] and isNumber(args[2]) then
 			distance = args[2]
 		end
@@ -10309,7 +10318,7 @@ addcmd('loopgoto',{},function(args, speaker)
 		repeat
 			if Players:FindFirstChild(v) then
 				if Players[v].Character ~= nil then
-					getRoot(speaker.Character).CFrame = getRoot(Players[v].Character).CFrame + Vector3.new(distance, 5,0)
+					getRoot(speaker.Character).CFrame = getRoot(Players[v].Character).CFrame + Vector3.new(distance,1,0)
 				end
 				wait(lDelay)
 			else
@@ -12880,7 +12889,7 @@ CaptureService.CaptureEnded:Connect(function()
     end)
 end)
 
---[[task.spawn(function()
+task.spawn(function()
 	local success, latestVersionInfo = pcall(function() 
 		local versionJson = game:HttpGet('https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/version')
 		return HttpService:JSONDecode(versionJson)
@@ -12974,7 +12983,7 @@ end)
 			end)
 		end
 	end
-end)--]]
+end)
 
 task.spawn(function()
 	wait()
