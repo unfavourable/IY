@@ -8794,32 +8794,40 @@ addcmd('un2022materials',{'unuse2022materials'},function(args, speaker)
 end)
 
 addcmd('goto',{'to'},function(args, speaker)
-	local players = getPlayer(args[1], speaker)
-	for i,v in pairs(players)do
-		if Players[v].Character ~= nil then
-			if speaker.Character:FindFirstChildOfClass('Humanoid') and speaker.Character:FindFirstChildOfClass('Humanoid').SeatPart then
-				speaker.Character:FindFirstChildOfClass('Humanoid').Sit = false
-				wait(.1)
+	local Targets = getPlayer(args[1], speaker);
+	for i, v in pairs(Targets) do
+		local TargetPlayer = Players[v];
+		if TargetPlayer.Character then
+			local Humanoid = speaker.Character:FindFirstChildOfClass('Humanoid');
+			if Humanoid and Humanoid.SeatPart then
+				Humanoid.Sit = false;
+				repeat task.wait() until Humanoid.Sit == false
 			end
-			getRoot(speaker.Character).CFrame = getRoot(Players[v].Character).CFrame + Vector3.new(3,1,0)
-		end
-	end
-	execCmd('breakvelocity')
+			getRoot(speaker.Character).CFrame = getRoot(TargetPlayer.Character).CFrame + Vector3.new(0, 1, 0);
+		end;
+	end;
+	execCmd('breakvelocity');
 end)
 
-addcmd('tweengoto',{'tgoto','tto','tweento'},function(args, speaker)
-	local players = getPlayer(args[1], speaker)
-	for i,v in pairs(players)do
-		if Players[v].Character ~= nil then
-			if speaker.Character:FindFirstChildOfClass('Humanoid') and speaker.Character:FindFirstChildOfClass('Humanoid').SeatPart then
-				speaker.Character:FindFirstChildOfClass('Humanoid').Sit = false
-				wait(.1)
+addcmd('tweengoto', {'tgoto', 'tto', 'tweento'}, function(args, speaker)
+	local Targets = getPlayer(args[1], speaker);
+	local Speed = tonumber(args[2]) or tweenSpeed;
+
+	for i, v in pairs(Targets) do
+		local TargetPlayer = Players[v];
+		if TargetPlayer.Character then
+			local Humanoid = speaker.Character:FindFirstChildOfClass('Humanoid');
+			if Humanoid and Humanoid.SeatPart then
+				Humanoid.Sit = false;
+				repeat task.wait() until Humanoid.Sit == false
 			end
-			TweenService:Create(getRoot(speaker.Character), TweenInfo.new(tweenSpeed, Enum.EasingStyle.Linear), {CFrame = getRoot(Players[v].Character).CFrame + Vector3.new(3,1,0)}):Play()
-		end
-	end
-	execCmd('breakvelocity')
-end)
+			local Goal = getRoot(TargetPlayer.Character).CFrame + Vector3.new(0, 1, 0);
+			TweenService:Create(getRoot(speaker.Character), TweenInfo.new(Speed, Enum.EasingStyle.Linear), {CFrame = Goal}):Play();
+		end;
+	end;
+
+	execCmd('breakvelocity');
+end);
 
 addcmd('vehiclegoto',{'vgoto','vtp','vehicletp'},function(args, speaker)
 	local players = getPlayer(args[1], speaker)
