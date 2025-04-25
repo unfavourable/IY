@@ -9620,13 +9620,13 @@ addcmd("infjump", {"infinitejump"}, function(args, speaker)
 			local speaker = game.Players.LocalPlayer 
 			local humanoid = speaker.Character and speaker.Character:FindFirstChildWhichIsA("Humanoid")
 			
-			if humanoid then
+			if humanoid and infJumpDebounce then
 				humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
 			end
 		end
 	end
 
-	UserInputService.InputBegan:Connect(onSpacebarPressed)
+	infJump = UserInputService.InputBegan:Connect(onSpacebarPressed)
 
 end)
 
