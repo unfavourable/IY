@@ -9611,7 +9611,6 @@ addcmd("jump", {}, function(args, speaker)
 end)
 
 local infJump
-infJumpDebounce = false
 addcmd("infjump", {"infinitejump"}, function(args, speaker)
 	local UserInputService = game:GetService("UserInputService")
 
@@ -9620,7 +9619,7 @@ addcmd("infjump", {"infinitejump"}, function(args, speaker)
 			local speaker = game.Players.LocalPlayer 
 			local humanoid = speaker.Character and speaker.Character:FindFirstChildWhichIsA("Humanoid")
 			
-			if humanoid and infJumpDebounce then
+			if humanoid then
 				humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
 			end
 		end
@@ -9632,7 +9631,6 @@ end)
 
 addcmd("uninfjump", {"uninfinitejump", "noinfjump", "noinfinitejump"}, function(args, speaker)
 	if infJump then infJump:Disconnect() end
-	infJumpDebounce = false
 end)
 
 local flyjump
