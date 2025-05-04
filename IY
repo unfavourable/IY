@@ -10055,41 +10055,59 @@ addcmd('spoofspeed',{'spoofws','spoofwalkspeed'},function(args, speaker)
 	end
 end)
 
-local oldspeed
-addcmd('loopspeed',{'loopws'},function(args, speaker)
-	local speed = args[1] or 16
-	if args[2] then
-		speed = args[2] or 16
-	end
-	if isNumber(speed) then
-		local Char = speaker.Character or workspace:FindFirstChild(speaker.Name)
-		local Human = Char and Char:FindFirstChildWhichIsA("Humanoid")
-		oldspeed = Human.WalkSpeed
-		local function WalkSpeedChange()
-			if Char and Human then
-				Human.WalkSpeed = speed
-			end
-		end
+local oldspeed;
+addcmd('loopspeed', {'loopws'}, function(args, speaker)
+    local speed = args[1] or 16;
+    if args[2] then
+        speed = args[2] or 16;
+    end;
+    if isNumber(speed) then
+        local Char = speaker.Character or workspace:FindFirstChild(speaker.Name);
+        local Human = Char and Char:FindFirstChildWhichIsA("Humanoid");
+        if Human and oldspeed == nil then
+            oldspeed = Human.WalkSpeed;
+        end;
+        local function WalkSpeedChange()
+            if Char and Human then
+                Human.WalkSpeed = speed;
+            end;
+        end;
+        WalkSpeedChange();
+        if HumanModCons.wsLoop then
+            HumanModCons.wsLoop:Disconnect();
+        end;
+        HumanModCons.wsLoop = Human and Human:GetPropertyChangedSignal("WalkSpeed"):Connect(WalkSpeedChange);
+        if HumanModCons.wsCA then
+            HumanModCons.wsCA:Disconnect();
+        end;
+        HumanModCons.wsCA = speaker.CharacterAdded:Connect(function(nChar)
+            Char = nChar;
+            Human = nChar:WaitForChild("Humanoid");
+            WalkSpeedChange();
+            if HumanModCons.wsLoop then
+                HumanModCons.wsLoop:Disconnect();
+            end;
+            HumanModCons.wsLoop = Human:GetPropertyChangedSignal("WalkSpeed"):Connect(WalkSpeedChange);
+        end);
+    end;
+end);
 
-		WalkSpeedChange()
-		HumanModCons.wsLoop = (HumanModCons.wsLoop and HumanModCons.wsLoop:Disconnect() and false) or Human:GetPropertyChangedSignal("WalkSpeed"):Connect(WalkSpeedChange)
-		HumanModCons.wsCA = (HumanModCons.wsCA and HumanModCons.wsCA:Disconnect() and false) or speaker.CharacterAdded:Connect(function(nChar)
-			Char, Human = nChar, nChar:WaitForChild("Humanoid")
-			WalkSpeedChange()
-			HumanModCons.wsLoop = (HumanModCons.wsLoop and HumanModCons.wsLoop:Disconnect() and false) or Human:GetPropertyChangedSignal("WalkSpeed"):Connect(WalkSpeedChange)
-		end)
-	end
-end)
-
-addcmd('unloopspeed',{'unloopws'},function(args, speaker)
-	HumanModCons.wsLoop = (HumanModCons.wsLoop and HumanModCons.wsLoop:Disconnect() and false) or nil
-	HumanModCons.wsCA = (HumanModCons.wsCA and HumanModCons.wsCA:Disconnect() and false) or nil
-	local Char = speaker.Character or workspace:FindFirstChild(speaker.Name)
-	local Human = Char and Char:FindFirstChildWhichIsA("Humanoid")
-	if Human then
-		Human.WalkSpeed = oldspeed 
-	end
-end)
+addcmd('unloopspeed', {'unloopws'}, function(args, speaker)
+    if HumanModCons.wsLoop then
+        HumanModCons.wsLoop:Disconnect();
+        HumanModCons.wsLoop = nil;
+    end;
+    if HumanModCons.wsCA then
+        HumanModCons.wsCA:Disconnect();
+        HumanModCons.wsCA = nil;
+    end;
+    local Char = speaker.Character or workspace:FindFirstChild(speaker.Name);
+    local Human = Char and Char:FindFirstChildWhichIsA("Humanoid");
+    if Human and oldspeed then
+        Human.WalkSpeed = oldspeed;
+        oldspeed = nil;
+    end;
+end);
 
 addcmd('spoofjumppower',{'spoofjp'},function(args, speaker)
 	if args[1] and isNumber(args[1]) then
